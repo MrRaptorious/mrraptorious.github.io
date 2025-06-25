@@ -6,5 +6,12 @@
 
 	"remoteEnv": {
 		"CHOKIDAR_USEPOLLING": "1"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"svelte.svelte-vscode"
+			]
+		}
 	}
 }
