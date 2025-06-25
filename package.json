@@ -10,7 +10,7 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"deploy": "pnpm build && pnpx gh-pages -d build -t true"
+		"deploy": "pnpm build && pnpx gh-pages -d build"
 	},
 	"devDependencies": {
 		"@catppuccin/tailwindcss": "^0.1.6",
