@@ -1,8 +1,9 @@
 <script>
+    import { base } from '$app/paths';
     import Card from "./card.svelte";
     let cardInfos = [
-        {image:"/placeholder_image.svg", title:"WebGL", subtitle:"subtitle test", tags:["GenArt","webGL"], link:"experiments/webgl"},
-        {image:"/placeholder_image.svg", title:"Meine Karte", subtitle:"subtitle test", tags:["GenArt","webGL"], link:""},
+        {image:`${base}/placeholder_image.svg`, title:"WebGL", subtitle:"subtitle test", tags:["GenArt","webGL"], link:"experiments/webgl"},
+        {image:`${base}/placeholder_image.svg`, title:"Meine Karte", subtitle:"subtitle test", tags:["GenArt","webGL"], link:""},
     ];
 
 </script>

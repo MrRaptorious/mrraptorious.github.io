@@ -1,5 +1,7 @@
 <script>
   import "../app.css";
+  import { base } from '$app/paths';
+  
 </script>
 
 
@@ -7,7 +9,7 @@
 
   <nav class="bg-crust-500 text-text-500 p-4">
       <ul class="flex space-x-4 justify-end">
-          <li><a href="/" class="hover:underline">Home</a></li>
+          <li><a href="{base}/" class="hover:underline">Home</a></li>
           <!-- <li><a href="/experiments" class="hover:underline">Experiments</a></li> -->
           <li><a href="https://github.com/MrRaptorious" class="hover:underline">GitHub</a></li>
       </ul>
