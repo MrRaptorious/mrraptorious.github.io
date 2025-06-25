@@ -1,1 +1,1 @@
-export const prerender = true;
+export const prerender = process.env.NODE_ENV === 'production';

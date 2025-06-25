@@ -1,5 +1,7 @@
 import adapter from '@sveltejs/adapter-static';
 
+const dev = process.argv.includes('dev');
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
@@ -9,11 +11,10 @@ const config = {
 			fallback: undefined,
 		}),
 		paths: {
-			base: process.argv.includes('dev') ? '' : '/mrraptorious.github.io',
-			assets: process.argv.includes('dev') ? '' : '/mrraptorious.github.io'
+			base: dev ? '' : '/mrraptorious.github.io',
 		},
 		prerender: {
-			entries: ['*']
+			entries: dev ? [] : ['*']
 		}
 	}
 };
