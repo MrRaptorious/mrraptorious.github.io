@@ -1,9 +1,23 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
-	"name": "Node.js",
+	"name": "GH-Pages",
 	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-
+	"forwardPorts": [
+		3000,
+		5173,
+		24678
+	],
+	"portsAttributes": {
+		"3000": {
+			"label": "Vite Dev Server",
+			"onAutoForward": "notify"
+		},
+		"24678": {
+			"label": "Vite HMR",
+			"onAutoForward": "silent"
+		}
+	},
 	"remoteEnv": {
 		"CHOKIDAR_USEPOLLING": "1"
 	},

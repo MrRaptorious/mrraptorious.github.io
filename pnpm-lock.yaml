@@ -9,10 +9,10 @@ importers:
   .:
     dependencies:
       '@tailwindcss/vite':
-        specifier: ^4.0.5
+        specifier: ^4.1.10
         version: 4.1.10(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
       tailwindcss:
-        specifier: ^4.0.5
+        specifier: ^4.1.10
         version: 4.1.10
       three:
         specifier: ^0.173.0
@@ -28,25 +28,25 @@ importers:
         specifier: ^3.0.8
         version: 3.0.8(@sveltejs/kit@2.22.0(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.8)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(svelte@5.34.8)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))
       '@sveltejs/kit':
-        specifier: ^2.16.0
+        specifier: ^2.22.0
         version: 2.22.0(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.8)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(svelte@5.34.8)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^5.0.0
+        specifier: ^5.1.0
         version: 5.1.0(svelte@5.34.8)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
       gh-pages:
         specifier: ^6.3.0
         version: 6.3.0
       svelte:
-        specifier: ^5.0.0
+        specifier: ^5.34.8
         version: 5.34.8
       svelte-check:
-        specifier: ^4.0.0
+        specifier: ^4.2.2
         version: 4.2.2(picomatch@4.0.2)(svelte@5.34.8)(typescript@5.8.3)
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.8.3
         version: 5.8.3
       vite:
-        specifier: ^6.0.0
+        specifier: ^6.3.5
         version: 6.3.5(jiti@2.4.2)(lightningcss@1.30.1)
 
 packages:
