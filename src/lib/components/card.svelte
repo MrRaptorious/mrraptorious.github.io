@@ -4,7 +4,7 @@
 
 
 <div class="max-w-sm rounded overflow-hidden shadow-lg, bg-surface0-500 ">
-    <img class="w-full" src="{image}" alt="Experiment">
+    <img class="w-full object-cover" src="{image}" style="width: 300px; height: 200px;" alt="Experiment">
     <div class="px-6 py-4">
       <div class="font-bold text-xl mb-2">{title}</div>
       <p class="text-subtext2-500">{subtitle}</p>
