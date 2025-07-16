@@ -1,11 +1,13 @@
 <script>
     import { base } from "$app/paths";
     import item_badge from "./experiments/spinnable_badge/item.js"
-    import item_wasm from "./experiments/wasm_test/item.js"
+    import item_wasm from "./experiments/dottify/item.js"
+    import item_mobility from "./experiments/mobility_models/item.js"
     import Card from "$lib/components/card.svelte";
     let cardInfos = [
         item_badge,
         item_wasm,
+        item_mobility
     ];
     
     cardInfos.forEach(e => {
