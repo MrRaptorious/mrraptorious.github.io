@@ -1,6 +1,7 @@
 <script>
   import "../app.css";
   import { base } from '$app/paths';
+  import meta from '../../meta.json'
   
 </script>
 
@@ -26,6 +27,6 @@
   </main>
 
   <footer class="bg-mantle-500 text-text-500 p-4 text-center mt-auto">
-      <p></p>
+      <p>Version {meta.version}</p>
   </footer>
 </div>
