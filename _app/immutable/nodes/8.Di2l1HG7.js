@@ -1,4 +1,4 @@
-import"../chunks/CWj6FrbW.js";import"../chunks/Be5dWuTk.js";import{o as l}from"../chunks/CbPKOLcE.js";import{p as f,d as p,a as u,e as h}from"../chunks/CKsiWAQM.js";import{i as w}from"../chunks/DRl7fnVc.js";import{S as g,P as x,W as b,a as _,V as y,C as c,T as C,M}from"../chunks/CubGkJgd.js";const S=`uniform vec3 diffuse;
+import"../chunks/CWj6FrbW.js";import"../chunks/Be5dWuTk.js";import{o as l}from"../chunks/ClWXu3MR.js";import{p as f,d as p,a as u,e as h}from"../chunks/CKsiWAQM.js";import{i as w}from"../chunks/DRl7fnVc.js";import{S as g,P as x,W as b,a as _,V as y,C as c,T as C,M}from"../chunks/CubGkJgd.js";const S=`uniform vec3 diffuse;
 uniform vec2 resolution;
 
 void main() {
