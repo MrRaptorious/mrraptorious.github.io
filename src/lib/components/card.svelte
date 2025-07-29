@@ -3,8 +3,8 @@
 </script>
 
 
-<div class="max-w-sm rounded overflow-hidden shadow-lg, bg-surface0-500 ">
-  <img class="w-full object-cover" src="{image}" style="width: 300px; height: 200px;" alt="Experiment">
+<div class="max-w-sm rounded overflow-hidden shadow-lg, bg-surface0-500 w-100 ">
+  <img class="w-full h-60 object-cover" src="{image}" alt="Experiment {title}">
   <div class="px-6 py-4">
     <div class="font-bold text-xl mb-2">{title}</div>
     <p class="text-subtext2-500 line-clamp-2"> {subtitle}
@@ -16,3 +16,15 @@
     {/each}
   </div>
 </div>
+
+<style>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* NEU: Umbruch bei langen Wörtern */
+  word-break: break-word; /* Oder word-wrap: break-word; (älterer Standard) */
+}
+</style>

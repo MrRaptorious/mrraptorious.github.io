@@ -7,7 +7,6 @@ module.exports = {
     "./src/**/*.{html,js,ts,svelte}", // Scan Svelte, JS, TS, and HTML files
   ],
   plugins: [
-    require('@tailwindcss/line-clamp'),
   ],
   theme: {
     extend: {

@@ -11,7 +11,7 @@ const config = {
 			fallback: undefined,
 		}),
 		paths: {
-			base: dev ? '' : '/mrraptorious.github.io',
+			base: dev ? '' : '',
 		},
 		prerender: {
 			entries: dev ? [] : ['*']
