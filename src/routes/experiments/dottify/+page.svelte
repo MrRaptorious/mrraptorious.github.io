@@ -17,7 +17,7 @@
       init_logging();
     } catch (e) {
       console.error("Failed to load WASM module:", e);
-      error = "Fehler beim Laden des WASM-Moduls.";
+      error = "Error while loading Wasm.";
     }
   });
 
@@ -64,21 +64,34 @@
       processedImageUrl = URL.createObjectURL(blob);
 
     } catch (e: any) {
-      error = `Fehler bei der Bildverarbeitung: ${e.message || e}`;
+      error = `Error while working with the Image: ${e.message || e}`;
     } finally {
       isLoading = false;
     }
   }
 </script>
 
-<div class="min-h-screen bg-gray-100 p-8 font-sans">
-  <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">
-    SvelteKit & Rust WASM Bildverarbeitung
+<div class="min-h-screen p-8 font-sans space-y-10">
+  <h1 class="text-3xl font-bold text-center mb-8">
+    Dottify Image
   </h1>
 
+  <p class="">
+    With image dottification you can create an stilistic image made from colorful dots spaced evenly on a grid, mimicing the original image.
+  </p>
+  <p class="">
+    This is my first project ever working with WASM. 
+    Just try it out!
+  </p>
+
   <div
-    class="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 p-6 bg-white rounded-lg shadow-md"
+    class="flex flex-col md:flex-col justify-center items-center gap-4 mb-8 p-6 rounded-lg shadow-md"
   >
+  <div
+    class="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 p-6 rounded-lg shadow-md"
+  >
+
+    <h3 class="text-xl">Image:</h3>
     <input
       type="file"
       on:change={handleFileUpload}
@@ -86,6 +99,7 @@
       class="py-2 px-4 border border-gray-300 rounded-md bg-gray-50 text-gray-700"
     />
 
+    <h3 class="text-xl">DotSize:</h3>
     <input
       type="range"
       id="numberInput"
@@ -97,6 +111,7 @@
       defaultValue="20"
     />
 
+    </div>
     <button
       on:click={processImageFromWASM}
       disabled={!file || !wasmLoaded || isLoading}
@@ -113,7 +128,7 @@
       {:else if !file}
         Coose Image first!
       {:else}
-        Edited Image via Wasm!
+        Dottify Image!
       {/if}
     </button>
 
@@ -127,13 +142,13 @@
   {/if}
 
   {#if processedImageUrl}
-    <h2 class="text-2xl font-semibold text-gray-700 text-center mb-4">
+    <h2 class="text-2xl font-semibold text-center mb-4">
       Your Image:
     </h2>
     <div class="flex justify-center">
       <img
         src={processedImageUrl}
-        alt="Verarbeitetes Bild von WASM"
+        alt="Dottified Image"
         class="max-w-full h-auto border border-gray-300 rounded-lg shadow-lg"
       />
     </div>

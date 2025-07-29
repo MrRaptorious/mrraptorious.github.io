@@ -80,4 +80,9 @@ impl Rng {
         let range_size = end - start;
         start + self.get() * range_size
     }
+
+    /// in radients
+    pub fn get_angle_between(&mut self, min_angle: f32, max_angle: f32) -> f32 {
+        min_angle + self.get() * (max_angle - min_angle)
+    }
 }

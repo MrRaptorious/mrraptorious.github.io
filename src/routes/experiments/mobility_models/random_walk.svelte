@@ -1,59 +1,60 @@
 <script lang="ts">
+    import init, { rw_init_simulation, rw_update_simulation } from "$lib/wasm_processor/rust_wasm";
   import { onMount } from "svelte";
-  import init, {
-    init_simulation,
-    update_simulation,
-  } from "../../../lib/wasm_processor/rust_wasm";
 
-  let rd_canvas: HTMLCanvasElement | null = null;
-  let rd_numAgents = 20;
-  let rd_min_speed = 5;
-  let rd_max_speed = 8;
-  let rd_pause_time = 50;
-  let rd_radius = 50;
-  let rd_animationFrame: number | null = null;
-  let rd_running = false;
-  let rd_started = false;
-
-  let rd_trace = false;
+  // meta variables
+  let canvas: HTMLCanvasElement | null = null;
+  let animationFrame: number | null = null;
+  let sim_running = false;
+  let sim_started = false;
+  let trace_mode = false;
   let old_agents: any[] = [];
+  let render = draw;
 
-  let draw = rd_draw;
+  // sim variables
+  let numAgents = 20;
+  let speed_min = 5;
+  let speed_max = 8;
+  let range = 50;
+  let movement_time = 50;
 
   // max speed never smaller than min speed
   $: {
-    if (rd_min_speed > rd_max_speed) {
-      rd_max_speed = rd_min_speed;
+    if (speed_min > speed_max) {
+      speed_max = speed_min;
     }
   }
 
   // set renderer
   $: {
     // clear screen
-    if (rd_canvas){ 
-    const ctx = rd_canvas.getContext("2d");
-    if (ctx){
-    ctx.clearRect(0, 0, rd_canvas.width, rd_canvas.height);
-    }}
-    if (!rd_trace) {
-      draw = rd_draw;
+    if (canvas){ 
+      const ctx = canvas.getContext("2d");
+      if (ctx){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }}
+        console.log(trace_mode)
+    if (!trace_mode) {
+        console.log("TraceMode = Draw")
+      render = draw;
     } else {
-      draw = rd_draw_traced;
+        console.log("TraceMode = Trace") 
+      render = draw_traced;
     }
   }
 
   function resizeCanvas() {
-    if (rd_canvas) {
+    if (canvas) {
       // Setze die Canvas-Attribute auf die tatsächliche Pixelgröße
-      const rect = rd_canvas.getBoundingClientRect();
-      rd_canvas.width = rect.width;
-      rd_canvas.height = rect.height;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
     }
   }
+    function draw_traced(agents: any[]) {
 
-  function rd_draw_traced(agents: any[]) {
-    if (!rd_canvas) return;
-    const ctx = rd_canvas.getContext("2d");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     ctx.strokeStyle = "#14b8a6";
@@ -75,30 +76,27 @@
     old_agents = agents;
   }
 
-  function rd_draw(agents: any[]) {
-    if (!rd_canvas) return;
-    const ctx = rd_canvas.getContext("2d");
+  function draw(agents: any[]) {
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.clearRect(0, 0, rd_canvas.width, rd_canvas.height);
-    rd_drawAgentConnections(ctx, agents[0], agents);
-    rd_drawAgents(ctx, agents);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawAgentConnections(ctx, agents[0], agents);
+    drawAgents(ctx, agents);
   }
 
-  function rd_drawAgents(
-    ctx: CanvasRenderingContext2D,
-    agents: any[],
-    size = 8,
-  ) {
+  function drawAgents(ctx: CanvasRenderingContext2D, agents: any[]) {
     ctx.fillStyle = "#000000"; // teal-500 fallback
 
     for (const agent of agents) {
       ctx.beginPath();
-      ctx.arc(agent.x, agent.y, size, 0, Math.PI * 2);
+      ctx.arc(agent.x, agent.y, 8, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  function rd_drawAgentConnections(
+  function drawAgentConnections(
     ctx: CanvasRenderingContext2D,
     focus: any,
     agents: any[],
@@ -107,7 +105,7 @@
     ctx.fillStyle = "#0000000F";
     ctx.strokeStyle = "#FFFFFF00";
     ctx.beginPath();
-    ctx.arc(focus.x, focus.y, rd_radius, 0, Math.PI * 2);
+    ctx.arc(focus.x, focus.y, range, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
 
@@ -119,7 +117,7 @@
       let d = Math.sqrt(x * x + y * y);
 
       // draw connections based on radius
-      if (d < rd_radius && d != 0) {
+      if (d < range && d != 0) {
         ctx.moveTo(focus.x, focus.y);
         ctx.lineTo(agent.x, agent.y);
       }
@@ -127,40 +125,35 @@
     ctx.stroke();
   }
 
-  async function rd_toggleSimulation() {
-    if (!rd_started) {
-      if (!rd_canvas) return;
-      resizeCanvas();
-      init_simulation(
-        rd_numAgents,
-        rd_canvas.width,
-        rd_canvas.height,
-        rd_min_speed,
-        rd_max_speed,
-        rd_pause_time,
+  async function toggleSimulation() {
+    if (!sim_started) {
+      if (!canvas) return;
+      rw_init_simulation(
+        numAgents,
+        canvas.width,
+        canvas.height,
+        speed_min,
+        speed_max,
+        movement_time
       );
 
-      rd_started = true;
+      sim_started = true;
     }
 
-    rd_running = !rd_running;
+    sim_running = !sim_running;
 
-    if (rd_running) {
+    if (sim_running) {
       function frame() {
-        const agents = update_simulation(
-          rd_min_speed,
-          rd_max_speed,
-          rd_pause_time,
-        );
+        const agents = rw_update_simulation(canvas!.width, canvas!.height, speed_min, speed_max, movement_time );
 
-        draw(agents);
+        render(agents);
 
-        rd_animationFrame = requestAnimationFrame(frame);
+        animationFrame = requestAnimationFrame(frame);
       }
-      if (rd_animationFrame) cancelAnimationFrame(rd_animationFrame);
+      if (animationFrame) cancelAnimationFrame(animationFrame);
       frame();
     } else {
-      if (rd_animationFrame) cancelAnimationFrame(rd_animationFrame);
+      if (animationFrame) cancelAnimationFrame(animationFrame);
     }
   }
 
@@ -175,69 +168,67 @@
   <div class="flex flex-col lg:flex-row flex-grow gap-6">
     <div class="lg:w-1/3 p-6 rounded-lg shadow-md flex flex-col space-y-4">
       <div class="flex flex-col space-y-2">
-        <div class="flex flex-row justify-between space-y-2">
-          <label for="rd_num_agents" class="text-subtext0 font-medium"
-            >Num Agents</label
-          >
-          <p>{rd_numAgents}</p>
+        <div class="flex flex-row justify-between">
+          <label for="rd_speed" class="text-subtext0 font-medium">Number of Agents</label>
+          <label for="rd_speed" class="text-subtext0 font-medium">{numAgents}</label>
         </div>
         <input
           type="range"
           id="rd_num_agents"
           min="2"
           max="100"
-          bind:value={rd_numAgents}
-          disabled={rd_running}
+          disabled={sim_running}
+          bind:value={numAgents}
           on:change={() => {
-            rd_started = false;
+            sim_started = false;
           }}
           class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
         />
       </div>
 
       <div class="flex flex-col space-y-2">
-        <label for="rd_min_speed" class="text-subtext0 font-medium"
-          >Min Speed</label
-        >
-        <input
-          type="range"
-          id="rd_min_speed"
-          min="1"
-          max="25"
-          step="0.1"
-          bind:value={rd_min_speed}
-          class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
-        />
-      </div>
-
-      <div class="flex flex-col space-y-2">
-        <label for="rd_max_speed" class="text-subtext0 font-medium"
-          >Max Speed</label
-        >
-        <input
-          type="range"
-          id="rd_max_speed"
-          min="1"
-          max="25"
-          step="0.1"
-          bind:value={rd_max_speed}
-          class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
-        />
-      </div>
-
-      <div class="flex flex-col space-y-2">
-        <div class="flex flex-row justify-between space-y-2">
-          <label for="rd_max_speed" class="text-subtext0 font-medium"
-            >Pause time</label
-          >
-          <p>{rd_pause_time} t</p>
+        <div class="flex flex-row justify-between">
+          <label for="rd_speed" class="text-subtext0 font-medium">Minimum Speed</label>
+          <label for="rd_speed" class="text-subtext0 font-medium">{speed_min}</label>
         </div>
         <input
           type="range"
-          id="rd_max_speed"
-          min="0"
+          id="rd_speed"
+          min="1"
+          max="10"
+          step="0.1"
+          bind:value={speed_min}
+          class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
+        />
+      </div>
+
+      <div class="flex flex-col space-y-2">
+        <div class="flex flex-row justify-between">
+          <label for="rd_speed" class="text-subtext0 font-medium">Maximum Speed</label>
+          <label for="rd_speed" class="text-subtext0 font-medium">{speed_max}</label>
+        </div>
+        <input
+          type="range"
+          id="rd_speed"
+          min="1"
+          max="10"
+          step="0.1"
+          bind:value={speed_max}
+          class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
+        />
+      </div>
+
+      <div class="flex flex-col space-y-2">
+        <div class="flex flex-row justify-between">
+          <label for="rd_speed" class="text-subtext0 font-medium">Movement Time</label>
+          <label for="rd_speed" class="text-subtext0 font-medium">{movement_time}</label>
+        </div>
+        <input
+          type="range"
+          id="rd_speed"
+          min="1"
           max="100"
-          bind:value={rd_pause_time}
+          bind:value={movement_time}
           class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
         />
       </div>
@@ -247,9 +238,9 @@
         <input
           type="range"
           id="rd_radius"
-          min="0"
+          min="1"
           max="1000"
-          bind:value={rd_radius}
+          bind:value={range}
           class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
         />
       </div>
@@ -259,24 +250,24 @@
         <input
           type="checkbox"
           id="rd_trace"
-          bind:checked={rd_trace}
+          bind:checked={trace_mode}
           class="p-3 border border-overlay1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue"
         />
       </div>
 
       <button
-        class="mt-4 {rd_running
+        class="mt-4 {sim_running
           ? 'bg-red-500'
           : 'bg-blue-500'} text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
-        on:click={rd_toggleSimulation}
+        on:click={toggleSimulation}
       >
-        {!rd_started ? "Start" : rd_running ? "Stop" : "Continue"}
+        {!sim_started ? "Start" : sim_running ? "Stop" : "Continue"}
       </button>
     </div>
 
     <div class="lg:w-2/3 p-6 rounded-lg shadow-md flex flex-col">
       <canvas
-        bind:this={rd_canvas}
+        bind:this={canvas}
         id="myCanvas"
         class="w-full h-[500px] border border-overlay1 rounded-md"
       ></canvas>
