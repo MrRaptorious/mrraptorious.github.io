@@ -4,6 +4,7 @@ import thumb from './thumb.png'
 let name = 'Mobility Models'
 
 export default {
+    id: "MOBILITYMODELS",
     image: thumb,
     title: name,
     subtitle: "Some interactive mobility Models",
