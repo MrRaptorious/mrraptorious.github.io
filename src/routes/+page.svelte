@@ -7,15 +7,18 @@
     import type { OpenWindow_t } from "$lib/components/ui95/openWindow.svelte";
     import type { ItemData } from "$lib/types";
 
+
     // experiments
     import item_badge from "./experiments/spinnable_badge/item.js";
     import item_wasm from "./experiments/dottify/item.js";
     import item_mobility from "./experiments/mobility_models/item.js";
     import item_automaton from "./experiments/cellautomaton/item.js";
     import item_diffImage from "./experiments/diff_image/item.js";
+    import item_dottify from "./experiments/dottify/item.js";
 
     let experiments: ItemData[] = [
         item_badge,
+        item_dottify,
         item_mobility,
         item_automaton,
         item_diffImage,
@@ -72,9 +75,10 @@
     }
 </script>
 
+
 <div class="flex flex-col h-screen w-screen">
     <!-- desktop -->
-    <div class="w-full h-full relative bg-blue-500" bind:this={desktop}>
+    <div class="w-full h-full relative bg-teal-700" bind:this={desktop}>
         {#each openWindows.values() as openWindow}
             <OpenWindow
                 id={openWindow.id}
@@ -91,11 +95,11 @@
         {/each}
 
         <!-- icons  -->
-        <div class="space-y-1">
+        <div class="space-y-1 p-10">
             {#each experiments as experiment, index}
                 <DesktopIcon
                     name={experiment.title}
-                    image={experiment.title}
+                    image={experiment.image}
                     dblclick={() => doubleclick(experiment.id)}
                 ></DesktopIcon>
             {/each}
@@ -111,3 +115,14 @@
         <div></div>
     </footer>
 </div>
+
+
+<style>
+    @import "../lib/fonts/font.css";
+
+    * {
+        font-family: 'Windows95', sans-serif;
+        font-weight: 400;
+    }
+
+</style>

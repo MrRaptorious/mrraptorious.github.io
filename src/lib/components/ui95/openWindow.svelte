@@ -97,7 +97,8 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
   bind:this={self}
-  class={"resize overflow-hidden absolute bg-red-500 min-h-15 min-w-15"}
+  id="openWindow"
+  class={"resize overflow-hidden absolute min-h-15 min-w-15"}
   style="width: {width}px;
         height: {height}px;
         top: {py}px;
@@ -110,19 +111,25 @@
   <div
     bind:this={handleBar}
     role="region"
-    class=" h-8 w-full flex flex-row justify-end bg-gray-500"
+    id="windowHead"
+    class=" h-8 w-full flex flex-row justify-end bg-violet-950 items-center"
     onmousedown={handleMouseDown}
     onmousemove={handleMouseMove}
     onmouseup={handleMouseUp}
   >
-    <p class="flex-1">{displayData.title}</p>
+    <p class="h-full w-full flex-1 text-white flex justify-left items-center m-1 mx-2">
+      {displayData.title}
+    </p>
 
     <!-- close button-->
     <button
-      class="h-full bg-green-500 aspect-square"
-      onclick={() => closeWindow(id)}>x</button
+      id="closeButton"
+      class="h-[calc(100%-5px)] aspect-square mx-1
+              grid place-items-center 
+              text-black text-lg font-bold
+              leading-[1]"
+      onclick={() => closeWindow(id)}>X</button
     >
-    <div class="bg-pink-500"></div>
   </div>
 
   {#if isdragging}
@@ -131,7 +138,7 @@
 
   <!-- contents-->
   <!-- svelte-ignore slot_element_deprecated -->
-  <div class="w-full h-full bg-pink-500">
+  <div class="w-full h-full bg-neutral-300">
     <iframe
       title={displayData.title}
       class="w-full h-full"
@@ -142,4 +149,31 @@
 </div>
 
 <style>
+  #closeButton {
+    border: 2px solid ;
+    border-width: 2px;
+    border-top-color: white;
+    border-left-color: white;
+    border-right-color: black;
+    border-bottom-color: black;
+    background-color: #c7c7c7;
+    font-size: large;
+  }
+
+  #windowHead {
+    background-color: #000082;
+    margin: 2px;
+  }
+
+  #openWindow{
+    background-color: #c7c7c7;
+    border: 2px solid;
+    border-top-color: white;
+    border-left-color: white;
+    border-right-color: black;
+    border-bottom-color: black;
+
+
+
+  }
 </style>

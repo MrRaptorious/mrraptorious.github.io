@@ -1,5 +1,5 @@
 import { base } from "$app/paths";
-import thumb from './thumb.png'
+import thumb from './pix_diffImage.png'
 
 let name = 'diff_image'
 

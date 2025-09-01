@@ -1,9 +1,10 @@
 import { base } from "$app/paths";
-import thumb from './thumb.png'
+import thumb from './pix_dottify.png'
 
 let name = 'dottify'
 
 export default {
+    id: "DOTTIFY",
     image: thumb,
     title: name,
     subtitle: "Transform an image into an dottified version with WASM",
