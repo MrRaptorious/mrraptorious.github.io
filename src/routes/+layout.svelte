@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
   import { base } from '$app/paths';
-  import meta from '../../meta.json'
+  import meta from "../lib/meta.json" 
   
 </script>
 

@@ -4,7 +4,7 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   mode: 'jit',
   content: [
-    "./src/**/*.{html,js,ts,svelte}", // Scan Svelte, JS, TS, and HTML files
+    "./src/**/*.{html,js,ts,svelte}",
   ],
   plugins: [
   ],

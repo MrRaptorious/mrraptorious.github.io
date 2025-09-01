@@ -3,15 +3,24 @@
     import item_badge from "./experiments/spinnable_badge/item.js"
     import item_wasm from "./experiments/dottify/item.js"
     import item_mobility from "./experiments/mobility_models/item.js"
+    //import item_automaton from "./experiments/cellautomaton/item.js"
+    import diff_image from "./experiments/diff_image/item.js"
+    import window_manager from "./experiments/window_manager/item.js"
+
     import Card from "$lib/components/card.svelte";
     let cardInfos = [
         item_wasm,
-        item_mobility
+        item_mobility,
+        //item_automaton,
+        //diff_image,
+        window_manager,
     ];
     
+    console.log("loaded:");
     cardInfos.forEach(e => {
        console.log(e.link);
     });
+    console.log("\n");
 </script>
 
 <div class="flex flex-col m-5 space-y-10">
@@ -20,7 +29,7 @@
     This is my website where I show my fun creations I made for the sake of learning and being interested in these technologies (and mostly just for fun!).
     </p>
 
-    <div class="flex">
+    <div class="flex flex-wrap">
         {#each cardInfos as cardInfo}
             <div
                 class="flex m-3 hover:scale-110 ease-in-out duration-300"
