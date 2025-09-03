@@ -18,11 +18,11 @@
     import item_dottify from "$lib/experiments/dottify/item.js";
 
     let experiments: ItemData[] = [
-        item_badge,
+        //item_badge,
         item_dottify,
         item_mobility,
-        item_automaton,
-        item_diffImage,
+        //item_automaton,
+        //item_diffImage,
     ];
     let openWindows = new Map<number, OpenWindow_t>();
 
