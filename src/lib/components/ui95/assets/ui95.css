@@ -1,0 +1,42 @@
+  .button3dInvert{
+    border: black 1px solid ;
+    border-bottom-color: white;
+    border-right-color: white;
+    border-top-color: black;
+    border-left-color: black;
+  }
+
+  .button3d{
+    border: black 1px solid ;
+    border-bottom-color: black;
+    border-right-color: black;
+    border-top-color: white;
+    border-left-color: white;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+    padding-top: 2px;
+    padding-bottom: 2px;
+    line-height: 1;
+
+    background-color: #c3c3c3;
+    
+  }
+
+  .button3d:active {
+    border: black 1px solid ;
+    border-bottom-color: white;
+    border-right-color: white;
+    border-top-color: black;
+    border-left-color: black;
+  }
+
+  .button3d > p {
+    border: transparent 2px dotted;
+  }
+
+  .button3d:active > p {
+    border: black 2px dotted;
+  }

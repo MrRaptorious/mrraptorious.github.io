@@ -1,10 +1,9 @@
 <script lang="ts">
-  import RandomDirection from "./random_direction.svelte";
+    import RandomDirection from "./random_direction.svelte";
     import RandomWalk from "./random_walk.svelte";
-
 </script>
 
-<div class="min-h-screen bg-base-500 p-4 flex flex-col space-y-10">
+<main class="h-full min-h-screen bg-base-500 p-4 flex flex-col space-y-10">
   <h1
     class="text-4xl font-bold text-center text-text mb-8 rounded-lg p-4 shadow-md"
   >
@@ -39,5 +38,11 @@
   The first step is to choose a direction to head in. Then the node will move until it hits a wall. After a small pause at the wall, a new direction is chosen. A node can choose any direction as long as it's away from the wall."
   </p>
   <RandomDirection></RandomDirection>
+</main>
 
-</div>
+
+<style>
+  main {
+    background-color: #c3c3c3;
+  }
+</style>

@@ -1,6 +1,6 @@
 import { base } from "$app/paths";
+import SpinnableBadge from "./spinnable_badge.svelte";
 import thumb from './pix_badge.png'
-
 let name = 'spinnable_badge'
 
 export default {
@@ -10,5 +10,6 @@ export default {
     subtitle: "3D spinnable object ",
     tags: ["threejs"],
     link: `${base}/experiments/${name}`,
+    component: SpinnableBadge,
 };
 

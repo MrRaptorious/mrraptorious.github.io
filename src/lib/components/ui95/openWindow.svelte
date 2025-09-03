@@ -1,5 +1,8 @@
 <script module>
   import type { ItemData } from "$lib/types";
+  import { clamp } from "$lib/util";
+  import Scrollbar from "./scrollbar.svelte";
+  import { onMount } from "svelte";
 
   export type OpenWindow_t = {
     id: number;
@@ -23,7 +26,6 @@
     closeWindow: (id: number) => void;
     updateWindowPosition: (id: number, px: number, py: number) => void;
     updateWindowSize: (id: number, width: number, height: number) => void;
-
   }
 
   let {
@@ -38,14 +40,25 @@
     updateWindowPosition,
     updateWindowSize,
   }: Props = $props();
+
   let isdragging = $state(false);
   let off_x = 0;
   let off_y = 0;
   let self: HTMLElement;
   let handleBar: HTMLElement;
 
-  function clamp(min: number, max: number, x: number) {
-    return Math.min(max, Math.max(min, x));
+  let grabberSize: number = 80;
+
+  let scrollableHeight = 0;
+  let contentContainer: HTMLDivElement;
+
+  function scrollCallback(fraction: number) {
+    if (contentContainer) {
+      const totalScrollHeight =
+        contentContainer.scrollHeight - contentContainer.clientHeight;
+      const newScrollPosition = totalScrollHeight * fraction;
+      contentContainer.scrollTo({ top: newScrollPosition, behavior: "smooth" });
+    }
   }
 
   function handleMouseDown(event: MouseEvent) {
@@ -71,7 +84,6 @@
         parent.clientHeight - self.clientHeight,
         event.clientY - off_y,
       );
-
     }
   }
 
@@ -86,25 +98,38 @@
   }
 
   function populateWindowUpdate() {
-    console.log("WindowUPDATE Populated");
     updateWindowPosition(id, px, py);
-    updateWindowSize(id, self.clientWidth, self.clientHeight );
+    updateWindowSize(id, self.clientWidth, self.clientHeight);
   }
 
+  function handleNativeScroll() {
+    if (contentContainer) {
+      const scrollPosition = contentContainer.scrollTop;
+      const totalScrollHeight =
+        contentContainer.scrollHeight - contentContainer.clientHeight;
 
+    }
+  }
+
+  onMount(() => {
+    if (contentContainer) {
+      scrollableHeight = contentContainer.scrollHeight;
+    }
+  });
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
   bind:this={self}
   id="openWindow"
-  class={"resize overflow-hidden absolute min-h-15 min-w-15"}
+  class={"resize overflow-hidden absolute min-h-15 min-w-15 flex flex-col"}
   style="width: {width}px;
         height: {height}px;
         top: {py}px;
         left: {px}px;"
   role="region"
   onmouseup={() => populateWindowUpdate()}
+        onscroll={handleNativeScroll}
 >
   <!-- headder -->
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -117,7 +142,9 @@
     onmousemove={handleMouseMove}
     onmouseup={handleMouseUp}
   >
-    <p class="h-full w-full flex-1 text-white flex justify-left items-center m-1 mx-2">
+    <p
+      class="h-full w-full flex-1 text-white flex justify-left items-center m-1 mx-2 overflow-hidden whitespace-nowrap break-keep"
+    >
       {displayData.title}
     </p>
 
@@ -125,38 +152,42 @@
     <button
       id="closeButton"
       class="h-[calc(100%-5px)] aspect-square mx-1
-              grid place-items-center 
+              grid place-items-center
               text-black text-lg font-bold
-              leading-[1]"
+              button3d"
       onclick={() => closeWindow(id)}>X</button
     >
   </div>
 
-  {#if isdragging}
+  <!-- {#if isdragging}
     <div class="absolute top-8 left-0 w-full h-full z-10"></div>
-  {/if}
+  {/if} -->
 
   <!-- contents-->
-  <!-- svelte-ignore slot_element_deprecated -->
-  <div class="w-full h-full bg-neutral-300">
-    <iframe
-      title={displayData.title}
-      class="w-full h-full"
-      src={displayData.link}
-      frameborder="0"
-    ></iframe>
+  <div class="flex-1 w-full flex flex-row overflow-hidden">
+    <div
+      class="flex-1 overflow-auto"
+      bind:this={contentContainer}
+    >
+      <!-- svelte-ignore svelte_component_deprecated -->
+      <svelte:component this={displayData.component}></svelte:component>
+    </div>
+    <!-- <div class="w-6 h-full">
+      <Scrollbar {scrollCallback} {grabberSize}></Scrollbar>
+    </div> -->
   </div>
 </div>
 
 <style>
+  @import "./assets/ui95.css";
+
+  .scrollContainer {
+    scrollbar-width: none;
+  }
+
   #closeButton {
-    border: 2px solid ;
     border-width: 2px;
-    border-top-color: white;
-    border-left-color: white;
-    border-right-color: black;
-    border-bottom-color: black;
-    background-color: #c7c7c7;
+    background-color: #c3c3c3;
     font-size: large;
   }
 
@@ -165,15 +196,12 @@
     margin: 2px;
   }
 
-  #openWindow{
-    background-color: #c7c7c7;
+  #openWindow {
+    background-color: #c3c3c3;
     border: 2px solid;
     border-top-color: white;
     border-left-color: white;
     border-right-color: black;
     border-bottom-color: black;
-
-
-
   }
 </style>
