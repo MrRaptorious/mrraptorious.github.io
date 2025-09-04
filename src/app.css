@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwindcss/preflight.css" layer(base);
 
 @theme {
     --color-rosewater-500: #f2d5cf;
@@ -27,4 +28,16 @@
     --color-base-500: #303446;
     --color-mantle-500: #292c3c;
     --color-crust-500: #232634;
+
+
+    --color-wingray-500: #818181;
+    --color-winlightgray-500: #c3c3c3;
+    --color-winwhite-500: #fdffff;
+    --color-winblue-500: #010081;
+    --color-winteal-500: #008080;
+    --color-winblack-500: #000000;
+    --color-winpink-500: #ff0081;
+    --color-wininfo-500: #ffffcc;
+    --color-wininfo-200: #ccccba;
+
 }

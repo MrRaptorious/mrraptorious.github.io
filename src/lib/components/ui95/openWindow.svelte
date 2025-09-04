@@ -137,7 +137,7 @@
     bind:this={handleBar}
     role="region"
     id="windowHead"
-    class=" h-8 w-full flex flex-row justify-end bg-violet-950 items-center"
+    class=" h-8 w-full flex flex-row justify-end items-center"
     onmousedown={handleMouseDown}
     onmousemove={handleMouseMove}
     onmouseup={handleMouseUp}

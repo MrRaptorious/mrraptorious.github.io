@@ -1,6 +1,7 @@
 <script lang="ts">
     import "../app.css";
     import { base } from "$app/paths";
+    import { MediaQuery } from "svelte/reactivity";
     import meta from "../lib/meta.json";
     import DesktopIcon from "$lib/components/ui95/desktop_icon.svelte";
     import OpenWindow from "$lib/components/ui95/openWindow.svelte";
@@ -9,7 +10,7 @@
     import type { ItemData } from "$lib/types";
 
 
-    // experiments
+    // #################### Desktop Icons ####################
     import item_badge from "$lib/experiments/spinnable_badge/item.js";
     import item_wasm from "$lib/experiments/dottify/item.js";
     import item_mobility from "$lib/experiments/mobility_models/item.js";
@@ -17,6 +18,7 @@
     import item_diffImage from "$lib/experiments/diff_image/item.js";
     import item_dottify from "$lib/experiments/dottify/item.js";
 
+    // #################### Vars ####################
     let experiments: ItemData[] = [
         //item_badge,
         item_dottify,
@@ -24,11 +26,13 @@
         //item_automaton,
         //item_diffImage,
     ];
-    let openWindows = new Map<number, OpenWindow_t>();
 
+    let openWindows = new Map<number, OpenWindow_t>();
     let desktop: HTMLElement;
     let currentID = 0;
+    const large = new MediaQuery('min-width: 800px');
 
+    // #################### Functions ####################
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
     }
@@ -76,10 +80,10 @@
     }
 </script>
 
-
+{#if large.current}
 <div class="flex flex-col h-screen w-screen">
     <!-- windows -->
-    <div class="w-full h-full relative bg-teal-700" bind:this={desktop}>
+    <div class="w-full h-full relative bg-winteal-500" bind:this={desktop}>
         {#each openWindows.values() as openWindow}
             <OpenWindow
                 id={openWindow.id}
@@ -110,6 +114,10 @@
     <!-- homebar -->
      <Homebar></Homebar>
 </div>
+{:else}
+<p>This page is only available on desktop</p>
+
+{/if}
 
 
 <style>
