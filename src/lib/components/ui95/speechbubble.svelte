@@ -1,5 +1,27 @@
 <script lang="ts">
-  let { right_offset, right_offset_unit }: { right_offset: number, right_offset_unit:string} = $props();
+  import { onMount } from "svelte";
+
+  interface SpeechbubbleProps {
+    right_offset: number;
+    right_offset_unit: string;
+    time?: number;
+    close?: () => void;
+  }
+
+  let {
+    right_offset,
+    right_offset_unit,
+    time = 0,
+    close = () => {},
+  }: SpeechbubbleProps = $props();
+
+  onMount(() => {
+    const interval = setInterval(() => {
+      close();
+    }, time);
+
+    return () => clearInterval(interval);
+  });
 </script>
 
 <div
@@ -10,7 +32,7 @@
     style="
     content: '';
     position: absolute;
-    right: {-right_offset+5}{right_offset_unit};
+    right: {-right_offset + 5}{right_offset_unit};
     bottom: -14px;
     border-width: 13px 13px 0;
     border-style: solid;
@@ -24,7 +46,7 @@
     style="
     content: '';
     position: absolute;
-    right: {-right_offset+5}{right_offset_unit}; 
+    right: {-right_offset + 5}{right_offset_unit}; 
     bottom: -13px;
     border-width: 13px 13px 0;
     border-style: solid;

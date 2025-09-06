@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
+  import { stutterFade } from "$lib/components/ui95/ui95Util";
   import type {
     DataManipulator,
     Program,
@@ -18,6 +20,8 @@
   let showBubble = $state(true);
 
   function hiddeBubble() {
+    // fadeout;
+
     showBubble = false;
   }
 
@@ -89,29 +93,36 @@
           />
 
           {#if showBubble}
-            <Speechbubble right_offset={-40} right_offset_unit={"px"}>
-              <svelte:fragment>
-                <div>
-                  <p class="text-left mx-1 whitespace-nowrap p-2">
-                    <b>Hello!</b> <br />
-                    This is my hobby project where I show things I wanted to explore.
-                    Feel free to look around.<br />
-                    <b> Double click</b> any Desktop Icon to see some Interesting
-                    things!
-                  </p>
-                  <hr class="mx-20 mt-2 border-wininfo-200" />
-                  <button
-                    class="w-20 border-1 border-wininfo-200 rounded-md m-2 hover:border-2 box-border px-[1px] py-[1px] hover:p-0 negative-push"
-                    onclick={(event) => {
-                      event.stopPropagation();
-                      hiddeBubble();
-                    }}
-                  >
-                    Ok
-                  </button>
-                </div>
-              </svelte:fragment>
-            </Speechbubble>
+            <div out:stutterFade>
+              <Speechbubble
+                right_offset={-40}
+                right_offset_unit={"px"}
+                time={1000 * 40}
+                close={hiddeBubble}
+              >
+                <svelte:fragment>
+                  <div>
+                    <p class="text-left mx-1 whitespace-nowrap p-2">
+                      <b>Hello!</b> <br />
+                      This is my hobby project where I show things I wanted to explore.
+                      Feel free to look around.<br />
+                      <b> Double click</b> any Desktop Icon to see some Interesting
+                      things!
+                    </p>
+                    <hr class="mx-20 mt-2 border-wininfo-200" />
+                    <button
+                      class="w-20 border-1 border-wininfo-200 rounded-md m-2 hover:border-2 box-border px-[1px] py-[1px] hover:p-0 negative-push"
+                      onclick={(event) => {
+                        event.stopPropagation();
+                        hiddeBubble();
+                      }}
+                    >
+                      Ok
+                    </button>
+                  </div>
+                </svelte:fragment>
+              </Speechbubble>
+            </div>
           {/if}
         </button>
       </div>
