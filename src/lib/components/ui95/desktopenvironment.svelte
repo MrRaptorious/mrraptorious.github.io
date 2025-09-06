@@ -56,6 +56,7 @@
   }
 
   function closeProgram(id: number): void {
+    console.log(openPrograms);
     openPrograms = openPrograms.filter((program: Program) => program.id != id);
   }
 
@@ -74,6 +75,18 @@
 
   function changePosition(id: number, newPosX: number, newPosY: number): void {
     console.log("PositionChanged: " + id);
+    openPrograms = openPrograms.map((p) => {
+      if (p.id === id) {
+        return {
+          ...p,
+          windowData: { ...p.windowData!, pos_x: newPosX, pos_y: newPosY },
+        };
+      } else {
+        return {
+          ...p,
+        };
+      }
+    });
   }
 
   function setWindowData(id: number, windowData: WindowData): void {
@@ -90,11 +103,18 @@
   function setfocus(id: number): void {
     console.log("focused called, new focus: " + id);
 
+    let max_z: number = Math.max(
+      0,
+      ...openPrograms
+        .filter((p) => p.windowData?.zindex)
+        .map((p) => p.windowData!.zindex),
+    );
+
     openPrograms = openPrograms.map((p) => {
       if (p.id === id) {
         return {
           ...p,
-          windowData: { ...p.windowData!, hasfocus: true },
+          windowData: { ...p.windowData!, hasfocus: true, zindex: ++max_z },
         };
       } else {
         return {
@@ -106,9 +126,9 @@
   }
 </script>
 
-<div class="h-full w-full flex flex-col">
+<div class="h-full w-full flex flex-col overflow-hidden">
   <!-- Desktop  -->
-  <div class="w-full h-full" bind:this={availableArea}>
+  <div class="w-full h-full overflow-hidden" bind:this={availableArea}>
     <Desktop {availablePrograms} {openProgram}></Desktop>
   </div>
 

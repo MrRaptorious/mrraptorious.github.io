@@ -81,7 +81,7 @@
 </script>
 
 {#if large.current}
-    <div class="w-screen h-screen">
+    <div class="w-screen h-screen overflow-hidden fixed">
         <Desktopenvironment></Desktopenvironment>
     </div>
 {:else}
@@ -94,5 +94,9 @@
     * {
         font-family: "Windows95", sans-serif;
         font-weight: 400;
+    }
+
+    body {
+        overflow: hidden;
     }
 </style>

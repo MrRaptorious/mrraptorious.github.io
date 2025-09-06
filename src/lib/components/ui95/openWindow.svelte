@@ -3,17 +3,28 @@
 </script>
 
 <script lang="ts">
-  import type { Program, WindowData, WindowEvents } from "./ui95types";
+  import type {
+    DataManipulator,
+    Program,
+    WindowData,
+    WindowEvents,
+  } from "./ui95types";
 
   interface OpenWindowProps {
     windowData: WindowData;
     availableArea: HTMLElement;
     windowEvents: WindowEvents;
+    dataManipulator: DataManipulator;
     program: Program;
   }
 
-  let { windowData, availableArea, windowEvents, program }: OpenWindowProps =
-    $props();
+  let {
+    windowData,
+    availableArea,
+    windowEvents,
+    dataManipulator,
+    program,
+  }: OpenWindowProps = $props();
 
   let isdragging = $state(false);
   let off_x = 0;
@@ -38,17 +49,28 @@
   }
 
   function handleMouseMove(event: MouseEvent) {
+    // if (isdragging) {
+    //   currentPosX = clamp(
+    //     0,
+    //     availableArea.clientWidth - self.clientWidth,
+    //     event.clientX - off_x,
+    //   );
+    //   currentPosY = clamp(
+    //     0,
+    //     availableArea.clientHeight - self.clientHeight,
+    //     event.clientY - off_y,
+    //   );
+    // }
     if (isdragging) {
-      currentPosX = clamp(
-        0,
-        availableArea.clientWidth - self.clientWidth,
-        event.clientX - off_x,
+      let clampedMouseX = clamp(0, availableArea.clientWidth, event.clientX);
+      let clampedMouseY = clamp(
+        off_y,
+        availableArea.clientHeight - handleBar.clientHeight,
+        event.clientY,
       );
-      currentPosY = clamp(
-        0,
-        availableArea.clientHeight - self.clientHeight,
-        event.clientY - off_y,
-      );
+
+      currentPosX = clampedMouseX - off_x;
+      currentPosY = clampedMouseY - off_y;
     }
   }
 
@@ -78,10 +100,14 @@
   style="width: {windowData.width}px;
         height: {windowData.height}px;
         top: {currentPosY}px;
-        left: {currentPosX}px;"
+        left: {currentPosX}px;
+        z-index: {windowData.zindex};"
   role="region"
   onmouseup={() => {
     propagateUpdates();
+  }}
+  onmousedown={() => {
+    dataManipulator.setfocus(program.id);
   }}
   bind:clientWidth={currentWidth}
   bind:clientHeight={currentHeight}

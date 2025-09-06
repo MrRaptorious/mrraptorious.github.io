@@ -34,6 +34,7 @@
           maximized: false,
           minimized: false,
           hasfocus: false,
+          zindex: 0,
         };
 
         console.log("WindowDataCreated for" + p.id);
@@ -45,12 +46,13 @@
   });
 </script>
 
-{#each openPrograms as p}
+{#each openPrograms as p (p.id)}
   {#if p.windowData}
     <OpenWindow
       windowData={p.windowData}
       {availableArea}
       {windowEvents}
+      {dataManipulator}
       program={p}
     ></OpenWindow>
   {/if}

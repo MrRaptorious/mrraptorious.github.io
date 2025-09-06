@@ -17,6 +17,7 @@ export type WindowData = {
   minimized: boolean;
   maximized: boolean;
   hasfocus: boolean;
+  zindex: number;
 }
 
 export interface WindowEvents {

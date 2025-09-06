@@ -37,7 +37,7 @@
 </script>
 
 <div
-  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500 space-x-2"
+  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500 space-x-2 z-9000 border border-t-white border-2"
 >
   <!-- start button -->
   <button
@@ -53,7 +53,7 @@
 
   <!-- open windows -->
   <div class=" h-full flex space-x-1 overflow-hidden flex-1 min-w-0">
-    {#each openPrograms as program}
+    {#each openPrograms as program (program.id)}
       <button
         class="h-full flex-1 max-w-60 flex flex-row justify-left items-center {program
           .windowData?.hasfocus
@@ -76,7 +76,7 @@
 
   <!-- time -->
   <div
-    class="px-4 text-black flex content-center items-center justify-center space-x-3 button3dInvert ml-auto"
+    class="px-4 text-black flex content-center items-center justify-center space-x-3 element3d-inv ml-auto"
   >
     <div class="flex justify-center space-x-1">
       <div class="flex justify-center">
