@@ -9,7 +9,6 @@
     import type { OpenWindow_t } from "$lib/components/ui95/openWindow.svelte";
     import type { ItemData } from "$lib/types";
 
-
     // #################### Desktop Icons ####################
     import item_badge from "$lib/experiments/spinnable_badge/item.js";
     import item_wasm from "$lib/experiments/dottify/item.js";
@@ -17,6 +16,7 @@
     import item_automaton from "$lib/experiments/cellautomaton/item.js";
     import item_diffImage from "$lib/experiments/diff_image/item.js";
     import item_dottify from "$lib/experiments/dottify/item.js";
+    import Desktopenvironment from "$lib/components/ui95/desktopenvironment.svelte";
 
     // #################### Vars ####################
     let experiments: ItemData[] = [
@@ -30,7 +30,7 @@
     let openWindows = new Map<number, OpenWindow_t>();
     let desktop: HTMLElement;
     let currentID = 0;
-    const large = new MediaQuery('min-width: 800px');
+    const large = new MediaQuery("min-width: 800px");
 
     // #################### Functions ####################
     function getRandomInt(max: number) {
@@ -81,50 +81,18 @@
 </script>
 
 {#if large.current}
-<div class="flex flex-col h-screen w-screen">
-    <!-- windows -->
-    <div class="w-full h-full relative bg-winteal-500" bind:this={desktop}>
-        {#each openWindows.values() as openWindow}
-            <OpenWindow
-                id={openWindow.id}
-                parent={desktop}
-                width={openWindow.width}
-                height={openWindow.height}
-                px={openWindow.posX}
-                py={openWindow.posY}
-                displayData={openWindow.displayData}
-                {closeWindow}
-                {updateWindowPosition}
-                {updateWindowSize}
-            ></OpenWindow>
-        {/each}
-
-        <!-- icons  -->
-        <div class="space-y-1 p-10">
-            {#each experiments as experiment, index}
-                <DesktopIcon
-                    name={experiment.title}
-                    image={experiment.image}
-                    dblclick={() => doubleclick(experiment.id)}
-                ></DesktopIcon>
-            {/each}
-        </div>
+    <div class="w-screen h-screen">
+        <Desktopenvironment></Desktopenvironment>
     </div>
-
-    <!-- homebar -->
-     <Homebar></Homebar>
-</div>
 {:else}
-<p>This page is only available on desktop</p>
-
+    <p>This page is only available on desktop</p>
 {/if}
-
 
 <style>
     @import "../lib/fonts/font.css";
 
     * {
-        font-family: 'Windows95', sans-serif;
+        font-family: "Windows95", sans-serif;
         font-weight: 400;
     }
 </style>

@@ -1,11 +1,20 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import type {
+    DataManipulator,
+    Program,
+  } from "$lib/components/ui95/ui95types";
   import start_icon from "$lib/components/ui95/assets/start_icon.png";
   import msg_information from "$lib/components/ui95/assets/msg_information.ico";
   import Speechbubble from "./speechbubble.svelte";
 
-  let time = $state(new Date());
+  interface HomebarProps {
+    openPrograms: Program[];
+    dataManipulator: DataManipulator;
+  }
+  let { openPrograms, dataManipulator }: HomebarProps = $props();
 
+  let time = $state(new Date());
   let showBubble = $state(true);
 
   function hiddeBubble() {
@@ -24,7 +33,7 @@
 </script>
 
 <div
-  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500"
+  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500 space-x-2"
 >
   <!-- start button -->
   <button
@@ -39,11 +48,31 @@
   </button>
 
   <!-- open windows -->
-  <div class="flex-10 h-full"></div>
+  <div class=" h-full flex space-x-1 overflow-hidden flex-1 min-w-0">
+    {#each openPrograms as program}
+      <button
+        class="h-full flex-1 max-w-60 flex flex-row justify-left items-center {program
+          .windowData?.hasfocus
+          ? 'element3d-inv taskbarbutton-focused'
+          : 'element3d taskbarbutton'}"
+        onclick={() => {
+          console.log("clicked button taskbar" + program.windowData?.hasfocus);
+          dataManipulator.setfocus(program.id);
+        }}
+      >
+        <img
+          src={program.image}
+          class="p-1 h-full [image-rendering:pixelated]"
+          alt={program.title}
+        />
+        <p class="text-black truncate">{program.title}</p>
+      </button>
+    {/each}
+  </div>
 
   <!-- time -->
   <div
-    class="px-4 text-black flex content-center items-center justify-center space-x-3 button3dInvert"
+    class="px-4 text-black flex content-center items-center justify-center space-x-3 button3dInvert ml-auto"
   >
     <div class="flex justify-center space-x-1">
       <div class="flex justify-center">
@@ -84,7 +113,6 @@
               </svelte:fragment>
             </Speechbubble>
           {/if}
-
         </button>
       </div>
     </div>

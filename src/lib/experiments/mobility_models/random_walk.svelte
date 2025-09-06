@@ -1,5 +1,8 @@
 <script lang="ts">
-    import init, { rw_init_simulation, rw_update_simulation } from "$lib/wasm_processor/rust_wasm";
+  import init, {
+    rw_init_simulation,
+    rw_update_simulation,
+  } from "$lib/wasm_processor/rust_wasm";
   import { onMount } from "svelte";
 
   // meta variables
@@ -28,17 +31,18 @@
   // set renderer
   $: {
     // clear screen
-    if (canvas){ 
+    if (canvas) {
       const ctx = canvas.getContext("2d");
-      if (ctx){
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }}
-        console.log(trace_mode)
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+    //console.log(trace_mode);
     if (!trace_mode) {
-        console.log("TraceMode = Draw")
+      //console.log("TraceMode = Draw")
       render = draw;
     } else {
-        console.log("TraceMode = Trace") 
+      //console.log("TraceMode = Trace")
       render = draw_traced;
     }
   }
@@ -51,8 +55,7 @@
       canvas.height = rect.height;
     }
   }
-    function draw_traced(agents: any[]) {
-
+  function draw_traced(agents: any[]) {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -134,7 +137,7 @@
         canvas.height,
         speed_min,
         speed_max,
-        movement_time
+        movement_time,
       );
 
       sim_started = true;
@@ -144,7 +147,13 @@
 
     if (sim_running) {
       function frame() {
-        const agents = rw_update_simulation(canvas!.width, canvas!.height, speed_min, speed_max, movement_time );
+        const agents = rw_update_simulation(
+          canvas!.width,
+          canvas!.height,
+          speed_min,
+          speed_max,
+          movement_time,
+        );
 
         render(agents);
 
@@ -169,8 +178,12 @@
     <div class="lg:w-1/3 p-6 rounded-lg shadow-md flex flex-col space-y-4">
       <div class="flex flex-col space-y-2">
         <div class="flex flex-row justify-between">
-          <label for="rd_speed" class="text-subtext0 font-medium">Number of Agents</label>
-          <label for="rd_speed" class="text-subtext0 font-medium">{numAgents}</label>
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >Number of Agents</label
+          >
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >{numAgents}</label
+          >
         </div>
         <input
           type="range"
@@ -188,8 +201,12 @@
 
       <div class="flex flex-col space-y-2">
         <div class="flex flex-row justify-between">
-          <label for="rd_speed" class="text-subtext0 font-medium">Minimum Speed</label>
-          <label for="rd_speed" class="text-subtext0 font-medium">{speed_min}</label>
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >Minimum Speed</label
+          >
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >{speed_min}</label
+          >
         </div>
         <input
           type="range"
@@ -204,8 +221,12 @@
 
       <div class="flex flex-col space-y-2">
         <div class="flex flex-row justify-between">
-          <label for="rd_speed" class="text-subtext0 font-medium">Maximum Speed</label>
-          <label for="rd_speed" class="text-subtext0 font-medium">{speed_max}</label>
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >Maximum Speed</label
+          >
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >{speed_max}</label
+          >
         </div>
         <input
           type="range"
@@ -220,8 +241,12 @@
 
       <div class="flex flex-col space-y-2">
         <div class="flex flex-row justify-between">
-          <label for="rd_speed" class="text-subtext0 font-medium">Movement Time</label>
-          <label for="rd_speed" class="text-subtext0 font-medium">{movement_time}</label>
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >Movement Time</label
+          >
+          <label for="rd_speed" class="text-subtext0 font-medium"
+            >{movement_time}</label
+          >
         </div>
         <input
           type="range"

@@ -1,87 +1,52 @@
 <script module>
-  import type { ItemData } from "$lib/types";
   import { clamp } from "$lib/util";
-  import Scrollbar from "./scrollbar.svelte";
-  import { onMount } from "svelte";
-
-  export type OpenWindow_t = {
-    id: number;
-    width: number;
-    height: number;
-    posX: number;
-    posY: number;
-    displayData: ItemData;
-  };
 </script>
 
 <script lang="ts">
-  interface Props {
-    id: number;
-    parent: HTMLElement;
-    width: number;
-    height: number;
-    px: number;
-    py: number;
-    displayData: ItemData;
-    closeWindow: (id: number) => void;
-    updateWindowPosition: (id: number, px: number, py: number) => void;
-    updateWindowSize: (id: number, width: number, height: number) => void;
+  import type { Program, WindowData, WindowEvents } from "./ui95types";
+
+  interface OpenWindowProps {
+    windowData: WindowData;
+    availableArea: HTMLElement;
+    windowEvents: WindowEvents;
+    program: Program;
   }
 
-  let {
-    id,
-    parent,
-    width,
-    height,
-    px,
-    py,
-    displayData,
-    closeWindow,
-    updateWindowPosition,
-    updateWindowSize,
-  }: Props = $props();
+  let { windowData, availableArea, windowEvents, program }: OpenWindowProps =
+    $props();
 
   let isdragging = $state(false);
   let off_x = 0;
   let off_y = 0;
+
+  let currentWidth = $state(windowData.width);
+  let currentHeight = $state(windowData.height);
+  let currentPosX = $state(windowData.pos_x);
+  let currentPosY = $state(windowData.pos_y);
+
   let self: HTMLElement;
   let handleBar: HTMLElement;
 
-  let grabberSize: number = 80;
-
-  let scrollableHeight = 0;
-  let contentContainer: HTMLDivElement;
-
-  function scrollCallback(fraction: number) {
-    if (contentContainer) {
-      const totalScrollHeight =
-        contentContainer.scrollHeight - contentContainer.clientHeight;
-      const newScrollPosition = totalScrollHeight * fraction;
-      contentContainer.scrollTo({ top: newScrollPosition, behavior: "smooth" });
-    }
-  }
-
   function handleMouseDown(event: MouseEvent) {
     isdragging = true;
-    off_x = event.clientX - px;
-    off_y = event.clientY - py;
+
+    off_x = event.clientX - currentPosX;
+    off_y = event.clientY - currentPosY;
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   }
 
   function handleMouseMove(event: MouseEvent) {
-    event.preventDefault();
-
     if (isdragging) {
-      px = clamp(
+      currentPosX = clamp(
         0,
-        parent.clientWidth - self.clientWidth,
+        availableArea.clientWidth - self.clientWidth,
         event.clientX - off_x,
       );
-      py = clamp(
+      currentPosY = clamp(
         0,
-        parent.clientHeight - self.clientHeight,
+        availableArea.clientHeight - self.clientHeight,
         event.clientY - off_y,
       );
     }
@@ -90,32 +55,19 @@
   function handleMouseUp() {
     isdragging = false;
 
-    // not needed, parent div handels update
-    // populateWindowUpdate();
+    windowEvents.onChangePosition(program.id, currentPosX, currentPosY);
+    windowEvents.onChangeSize(program.id, currentWidth, currentHeight);
 
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
   }
 
-  function populateWindowUpdate() {
-    updateWindowPosition(id, px, py);
-    updateWindowSize(id, self.clientWidth, self.clientHeight);
+  function propagateUpdates() {
+    windowEvents.onChangePosition(program.id, currentPosX, currentPosY);
+    windowEvents.onChangeSize(program.id, currentWidth, currentHeight);
+    console.log("current width: ", currentWidth);
+    console.log("window width: ", windowData.width);
   }
-
-  function handleNativeScroll() {
-    if (contentContainer) {
-      const scrollPosition = contentContainer.scrollTop;
-      const totalScrollHeight =
-        contentContainer.scrollHeight - contentContainer.clientHeight;
-
-    }
-  }
-
-  onMount(() => {
-    if (contentContainer) {
-      scrollableHeight = contentContainer.scrollHeight;
-    }
-  });
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -123,13 +75,16 @@
   bind:this={self}
   id="openWindow"
   class={"resize overflow-hidden absolute min-h-15 min-w-15 flex flex-col"}
-  style="width: {width}px;
-        height: {height}px;
-        top: {py}px;
-        left: {px}px;"
+  style="width: {windowData.width}px;
+        height: {windowData.height}px;
+        top: {currentPosY}px;
+        left: {currentPosX}px;"
   role="region"
-  onmouseup={() => populateWindowUpdate()}
-        onscroll={handleNativeScroll}
+  onmouseup={() => {
+    propagateUpdates();
+  }}
+  bind:clientWidth={currentWidth}
+  bind:clientHeight={currentHeight}
 >
   <!-- headder -->
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -145,7 +100,7 @@
     <p
       class="h-full w-full flex-1 text-white flex justify-left items-center m-1 mx-2 overflow-hidden whitespace-nowrap break-keep"
     >
-      {displayData.title}
+      {program.title}
     </p>
 
     <!-- close button-->
@@ -155,35 +110,21 @@
               grid place-items-center
               text-black text-lg font-bold
               button3d"
-      onclick={() => closeWindow(id)}>X</button
+      onclick={() => windowEvents.onClose(program.id)}>X</button
     >
   </div>
 
-  <!-- {#if isdragging}
-    <div class="absolute top-8 left-0 w-full h-full z-10"></div>
-  {/if} -->
-
   <!-- contents-->
   <div class="flex-1 w-full flex flex-row overflow-hidden">
-    <div
-      class="flex-1 overflow-auto"
-      bind:this={contentContainer}
-    >
+    <div class="flex-1 overflow-auto">
       <!-- svelte-ignore svelte_component_deprecated -->
-      <svelte:component this={displayData.component}></svelte:component>
+      <svelte:component this={program.component}></svelte:component>
     </div>
-    <!-- <div class="w-6 h-full">
-      <Scrollbar {scrollCallback} {grabberSize}></Scrollbar>
-    </div> -->
   </div>
 </div>
 
 <style>
   @import "./assets/ui95.css";
-
-  .scrollContainer {
-    scrollbar-width: none;
-  }
 
   #closeButton {
     border-width: 2px;
