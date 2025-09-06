@@ -2,26 +2,48 @@
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { stutterFade } from "$lib/components/ui95/ui95Util";
+  import StartmenuItem from "./startmenuItem.svelte";
+  import ScreenSaver from "./screensaver.svelte";
   import type {
     DataManipulator,
     Program,
   } from "$lib/components/ui95/ui95types";
-  import start_icon from "$lib/components/ui95/assets/start_icon.png";
-  import msg_information from "$lib/components/ui95/assets/msg_information.ico";
   import Speechbubble from "./speechbubble.svelte";
+
+  import msg_information from "$lib/components/ui95/assets/msg_information.ico";
+  import start_icon from "$lib/components/ui95/assets/start_icon.png";
+  import links_icon from "$lib/components/ui95/assets/links.ico";
+  import programs_icon from "$lib/components/ui95/assets/programs.ico";
+  import suspend_icon from "$lib/components/ui95/assets/suspend.ico";
+  import documents_icon from "$lib/components/ui95/assets/documents.ico";
+  import github_icon from "$lib/components/ui95/assets/githubPixelated.png";
+  import forbidden_icon from "$lib/components/ui95/assets/forbidden.ico";
 
   interface HomebarProps {
     openPrograms: Program[];
+    availablePrograms: Program[];
     dataManipulator: DataManipulator;
+    openProgram: (toOpen: Program) => void;
   }
-  let { openPrograms, dataManipulator }: HomebarProps = $props();
+  let {
+    openPrograms,
+    availablePrograms,
+    dataManipulator,
+    openProgram,
+  }: HomebarProps = $props();
 
+  // ********** homebar *************
+  let showStartMenu = $state(false);
+  // svelte-ignore non_reactive_update
+  let currentID = 1;
+  let currentPath: number[] = $state([]);
+  let screensaver = $state(false);
+
+  // ********** info Bubble *************
   let time = $state(new Date());
   let showBubble = $state(true);
 
   function hiddeBubble() {
-    // fadeout;
-
     showBubble = false;
   }
 
@@ -34,22 +56,149 @@
       clearInterval(interval);
     };
   });
+
+  function closeStartMenu() {
+    showStartMenu = false;
+  }
 </script>
 
 <div
-  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500 space-x-2 z-9000 border border-t-white border-2"
+  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500 space-x-2 z-9000 border-t-white border-2"
 >
   <!-- start button -->
-  <button
-    class="w-25 text-black flex space-x-2 button3d text-xl font-bold justify-center"
-  >
-    <img
-      src={start_icon}
-      alt="svelte windows logo"
-      class="[image-rendering:pixelated] p-[3px]"
-    />
-    <p>Home</p>
-  </button>
+  <div class="w-25 text-black flex justify-center">
+    <button
+      class="w-25 text-black flex space-x-2 button3d text-xl font-bold justify-center"
+      onclick={(e) => {
+        e.stopPropagation();
+        if (showStartMenu) {
+          showStartMenu = false;
+          document.removeEventListener("click", closeStartMenu);
+        } else {
+          showStartMenu = true;
+          document.addEventListener("click", closeStartMenu);
+        }
+      }}
+    >
+      <img
+        src={start_icon}
+        alt="svelte windows logo"
+        class="[image-rendering:pixelated] p-[3px]"
+      />
+      <p>Home</p>
+    </button>
+
+    {#if showStartMenu}
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div
+        class="absolute bottom-11 text-black border speech-bubble left-1 w-60 element3d flex flex-row bg-wingray-500"
+        onclick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div
+          class="[writing-mode:vertical-rl] flex w-10 bg-winblue-500 justify-end items-end text-white"
+        >
+          <p class="text-rotated text-3xl px-5">PortfoliOS</p>
+        </div>
+        <div class="grow">
+          <StartmenuItem
+            id={currentID++}
+            bind:currentPath
+            text={"Programs"}
+            image={programs_icon}
+            isFolder={true}
+            height={55}
+          >
+            <div class="absolute" style="right: 0px; top: 0px;">
+              <div class="absolute flex element3d flex-col min-w-50">
+                {#each availablePrograms as program}
+                  <StartmenuItem
+                    id={currentID++}
+                    text={program.title}
+                    image={program.image}
+                    bind:currentPath
+                    height={30}
+                    data={program.id}
+                    clicked={() => {
+                      openProgram(program);
+
+                      showStartMenu = false;
+                    }}
+                    highlighted={true}
+                  ></StartmenuItem>
+                {/each}
+              </div>
+            </div>
+          </StartmenuItem>
+
+          <StartmenuItem
+            id={currentID++}
+            text={"Documents"}
+            image={documents_icon}
+            bind:currentPath
+            isFolder={true}
+            height={60}
+          >
+            <div class="absolute" style="right: 0px; top: 0px; ">
+              <div class="absolute flex element3d flex-col min-w-50">
+                <StartmenuItem
+                  id={currentID++}
+                  text={"Empty"}
+                  image={forbidden_icon}
+                  bind:currentPath
+                  height={30}
+                ></StartmenuItem>
+              </div>
+            </div>
+          </StartmenuItem>
+
+          <StartmenuItem
+            id={currentID++}
+            text={"Links"}
+            image={links_icon}
+            bind:currentPath
+            isFolder={true}
+            height={60}
+          >
+            <div class="absolute" style="right: 0px; top: 0px; ">
+              <div class="absolute flex element3d flex-col min-w-50">
+                <StartmenuItem
+                  id={currentID++}
+                  text={"GitHub"}
+                  image={github_icon}
+                  bind:currentPath
+                  height={30}
+                  data={"https://github.com/MrRaptorious"}
+                  clicked={() => {
+                    window
+                      ?.open("https://github.com/MrRaptorious", "_blank")
+                      ?.focus();
+                    showStartMenu = false;
+                  }}
+                  highlighted={true}
+                ></StartmenuItem>
+              </div>
+            </div>
+          </StartmenuItem>
+
+          <hr id="startmenuHR" />
+
+          <StartmenuItem
+            id={currentID++}
+            text={"Suspend"}
+            image={suspend_icon}
+            bind:currentPath
+            clicked={() => {
+              screensaver = true;
+            }}
+            height={60}
+          ></StartmenuItem>
+        </div>
+      </div>
+    {/if}
+  </div>
 
   <!-- open windows -->
   <div class=" h-full flex space-x-1 overflow-hidden flex-1 min-w-0">
@@ -136,6 +285,15 @@
     </p>
   </div>
 </div>
+{#if screensaver}
+  <div in:stutterFade out:stutterFade={{ delay: 200 }}>
+    <ScreenSaver
+      deactivate={() => {
+        screensaver = false;
+      }}
+    ></ScreenSaver>
+  </div>
+{/if}
 
 <style>
   @import "../ui95/assets/ui95.css";
@@ -145,5 +303,13 @@
     border-right-width: 1px;
     border-left-width: 3px;
     border-bottom-width: 1px;
+  }
+  .text-rotated {
+    transform: rotate(180deg);
+  }
+  #startmenuHR {
+    border: 2px solid transparent;
+    border-top-color: var(--color-wingray-500);
+    border-bottom-color: var(--color-winlightgray-200);
   }
 </style>

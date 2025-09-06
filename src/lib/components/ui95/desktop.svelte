@@ -15,7 +15,7 @@
   let endX = $state(0);
   let endY = $state(0);
 
-  let iconElements: HTMLElement[] = [];
+  let iconElements: HTMLElement[] = $state([]);
   let selectedProgramIds = $state<Set<number>>(new Set());
 
   function handleMouseDown(event: MouseEvent) {

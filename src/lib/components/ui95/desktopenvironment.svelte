@@ -141,5 +141,6 @@
   ></Windowrenderer>
 
   <!-- Homebar -->
-  <Homebar {openPrograms} {dataManipulator}></Homebar>
+  <Homebar {openPrograms} {dataManipulator} {availablePrograms} {openProgram}
+  ></Homebar>
 </div>

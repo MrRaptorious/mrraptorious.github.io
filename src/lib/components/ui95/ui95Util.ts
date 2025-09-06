@@ -5,7 +5,7 @@ export function stutterFade(node: HTMLElement, params: { delay?: number, duratio
   return {
     delay: params.delay || 0,
     duration: params.duration || 400,
-    css: (t, u) => `opacity: ${Math.round(t * 5) / 5};`
+    css: (t, u) => `opacity: ${Math.round(t * 5) / 5}; z-index: 999999;`
   }
 }
 
