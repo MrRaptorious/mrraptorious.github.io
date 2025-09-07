@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fade } from "svelte/transition";
   import { stutterFade } from "$lib/components/ui95/ui95Util";
   import StartmenuItem from "./startmenuItem.svelte";
   import ScreenSaver from "./screensaver.svelte";
@@ -296,7 +295,7 @@
 {/if}
 
 <style>
-  @import "../ui95/assets/ui95.css";
+  @import "$lib/components/ui95/assets/ui95.css";
 
   .negative-push:active {
     border: var(--color-wininfo-200) solid;

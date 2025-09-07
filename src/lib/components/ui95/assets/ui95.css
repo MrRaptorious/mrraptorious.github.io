@@ -71,3 +71,15 @@
   .taskbarbutton-focused {
     background-color: var(--color-winlightgray-200);
   }
+
+  .link:visited {
+    color: purple;
+  }
+
+  .link {
+    color: var(--color-winblue-500);
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
