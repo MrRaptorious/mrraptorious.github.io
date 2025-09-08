@@ -40,7 +40,7 @@
 >
   <button
     class:startmenuitem-highlighted={currentPath.find((x) => x == id)}
-    class="startmenuitem w-full bg-red-50 flex flex-row items-center px-2 text-left h-full space-x-3"
+    class="startmenuitem w-full bg-red-50 flex flex-row items-center px-2 text-left h-full"
     style="height: {height}px;"
     onclick={(e) => {
       e.stopPropagation();
@@ -55,14 +55,17 @@
       style="height: {height * 0.7}px;"
     />
 
-    <p class="grow text-lg">{text}</p>
+    <p class="grow text-lg mx-3">{text}</p>
     {#if isFolder}
       <div class="arrow-right absolute right-3"></div>
     {/if}
 
+    <!-- extra div for alignment -->
     <!-- svelte-ignore slot_element_deprecated -->
     {#if currentPath.find((x) => x == id)}
       <slot />
+    {:else}
+      <div></div>
     {/if}
   </button>
 </div>

@@ -17,6 +17,7 @@
   import suspend_icon from "$lib/components/ui95/assets/suspend.ico";
   import documents_icon from "$lib/components/ui95/assets/documents.ico";
   import github_icon from "$lib/components/ui95/assets/githubPixelated.png";
+  import linkedin_icon from "$lib/components/ui95/assets/linkedInPixelated.png";
   import forbidden_icon from "$lib/components/ui95/assets/forbidden.ico";
   import text_icon_smooth from "$lib/components/ui95/assets/font_smooth.png";
   import text_icon_pixelated from "$lib/components/ui95/assets/font_pixelated.png";
@@ -184,6 +185,24 @@
                   clicked={() => {
                     window
                       ?.open("https://github.com/MrRaptorious", "_blank")
+                      ?.focus();
+                    showStartMenu = false;
+                  }}
+                  highlighted={true}
+                ></StartmenuItem>
+                <StartmenuItem
+                  id={currentID++}
+                  text={"Linkedin"}
+                  image={linkedin_icon}
+                  bind:currentPath
+                  height={30}
+                  data={"https://www.linkedin.com/in/lorenz-braun-023284160/"}
+                  clicked={() => {
+                    window
+                      ?.open(
+                        "https://www.linkedin.com/in/lorenz-braun-023284160/",
+                        "_blank",
+                      )
                       ?.focus();
                     showStartMenu = false;
                   }}
