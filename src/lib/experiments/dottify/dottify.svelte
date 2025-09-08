@@ -297,7 +297,7 @@
         </div>
       </section>
       <section>
-        <h2 class="text-xl">Some theory - Data Representation</h2>
+        <h2 class="text-xl">Some theory - Image Operations</h2>
         <p>
           In computervision there are many different operations to apply to an
           image. Those operations can be categorized in three different

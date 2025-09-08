@@ -27,21 +27,22 @@
     openPrograms.forEach((p) => {
       if (!p.windowData) {
         let windowData: WindowData = {
-          pos_x: availableArea.clientWidth * 0.1,
-          pos_y: availableArea.clientHeight * 0.1,
-          width: availableArea.clientWidth * 0.8,
-          height: availableArea.clientHeight * 0.8,
+          pos_x: availableArea.offsetWidth * 0.1,
+          pos_y: availableArea.offsetHeight * 0.1,
+          width: availableArea.offsetWidth * 0.8,
+          height: availableArea.offsetHeight * 0.8,
           maximized: false,
           minimized: false,
           hasfocus: false,
           zindex: 0,
         };
 
-        console.log("WindowDataCreated for" + p.id);
-
+        console.log("WINDOWDATA CREATED: " + p.id);
         dataManipulator.setWindowData(p.id, windowData);
         dataManipulator.setfocus(p.id);
-      } else console.log("there were windowdata for " + p.id);
+      } else {
+        console.log("WINDOWDATA FOUND" + p.id);
+      }
     });
   });
 </script>

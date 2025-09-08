@@ -1,5 +1,6 @@
 <script module>
   import { clamp } from "$lib/util";
+  import { onMount } from "svelte";
 </script>
 
 <script lang="ts">
@@ -30,8 +31,11 @@
   let off_x = 0;
   let off_y = 0;
 
-  let currentWidth = $state(windowData.width);
-  let currentHeight = $state(windowData.height);
+  let currentWidth = $state(0);
+  currentWidth = windowData.width;
+  let currentHeight = $state(0);
+  currentHeight = windowData.height;
+
   let currentPosX = $state(windowData.pos_x);
   let currentPosY = $state(windowData.pos_y);
 
@@ -39,6 +43,7 @@
   let handleBar: HTMLElement;
 
   function handleMouseDown(event: MouseEvent) {
+    console.log("MouseDownCalled");
     isdragging = true;
 
     off_x = event.clientX - currentPosX;
@@ -49,23 +54,11 @@
   }
 
   function handleMouseMove(event: MouseEvent) {
-    // if (isdragging) {
-    //   currentPosX = clamp(
-    //     0,
-    //     availableArea.clientWidth - self.clientWidth,
-    //     event.clientX - off_x,
-    //   );
-    //   currentPosY = clamp(
-    //     0,
-    //     availableArea.clientHeight - self.clientHeight,
-    //     event.clientY - off_y,
-    //   );
-    // }
     if (isdragging) {
-      let clampedMouseX = clamp(0, availableArea.clientWidth, event.clientX);
+      let clampedMouseX = clamp(0, availableArea.offsetWidth, event.clientX);
       let clampedMouseY = clamp(
         off_y,
-        availableArea.clientHeight - handleBar.clientHeight,
+        availableArea.clientHeight - handleBar.offsetHeight,
         event.clientY,
       );
 
@@ -85,10 +78,18 @@
   }
 
   function propagateUpdates() {
+    console.log("PROPAGATEUPDATES:");
+    console.log("CURRENT w : \t", currentWidth);
     windowEvents.onChangePosition(program.id, currentPosX, currentPosY);
     windowEvents.onChangeSize(program.id, currentWidth, currentHeight);
-    console.log("current width: ", currentWidth);
-    console.log("window width: ", windowData.width);
+    console.log("WINDOW w : \t", windowData.width);
+  }
+
+  function openwindowMouseDown() {
+    dataManipulator.setfocus(program.id);
+  }
+  function openwindowMouseUp() {
+    propagateUpdates();
   }
 </script>
 
@@ -103,14 +104,10 @@
         left: {currentPosX}px;
         z-index: {windowData.zindex};"
   role="region"
-  onmouseup={() => {
-    propagateUpdates();
-  }}
-  onmousedown={() => {
-    dataManipulator.setfocus(program.id);
-  }}
-  bind:clientWidth={currentWidth}
-  bind:clientHeight={currentHeight}
+  onmouseup={openwindowMouseUp}
+  onmousedown={openwindowMouseDown}
+  bind:offsetWidth={currentWidth}
+  bind:offsetHeight={currentHeight}
 >
   <!-- headder -->
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

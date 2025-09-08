@@ -61,7 +61,15 @@
   }
 
   function changeSize(id: number, newWidth: number, newHeight: number): void {
-    console.log("SizeChanged: " + id);
+    // debut
+    let tmp = openPrograms.find((pid) => pid.id == id);
+    console.log("SizeChanged: " + tmp?.title);
+    if (tmp) {
+      console.log("\tfrom: ", tmp.windowData?.width);
+      console.log("\tto  : ", newWidth);
+    }
+    // enddebug
+
     openPrograms = openPrograms.map((p) => {
       if (p.id == id) {
         return {

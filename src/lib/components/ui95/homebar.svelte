@@ -281,8 +281,8 @@
                   <div>
                     <p class="text-left mx-1 whitespace-nowrap p-2">
                       <b>Hello!</b> <br />
-                      This is my hobby project where I show things I wanted to explore.
-                      Feel free to look around.<br />
+                      This is my hobby project/portfolio where I show things I wanted
+                      to explore or read about.<br />Feel free to look around.
                       <b> Double click</b> any Desktop Icon to see some Interesting
                       things!
                     </p>
