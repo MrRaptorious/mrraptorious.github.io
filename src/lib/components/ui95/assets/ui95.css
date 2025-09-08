@@ -1,5 +1,5 @@
-  .button3dInvert {
-    border: black 1px solid;
+  .button3d-inv {
+    border: black var(--border-winwidth) solid;
     border-bottom-color: white;
     border-right-color: white;
     border-top-color: black;
@@ -7,7 +7,7 @@
   }
 
   .button3d {
-    border: black 2px solid;
+    border: black var(--border-winwidth) solid;
     border-bottom-color: black;
     border-right-color: black;
     border-top-color: white;
@@ -17,31 +17,41 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 
-    padding-top: 2px;
-    padding-bottom: 2px;
-    line-height: 1;
+    /* what the hell */
+    /* padding-top: 2px; */
+    /* padding-bottom: 2px; */
+    /* line-height: 1; */
   }
 
+  .button3d>div {
+    border: transparent 2px dotted;
+  }
+
+  .button3d-inv>div {
+    border: black 2px dotted;
+  }
+
+
+  /* OLD TO BE REMOVED   */
+
   .button3d:active {
-    border: black 2px solid;
+    border: black 3px solid;
     border-bottom-color: white;
     border-right-color: white;
     border-top-color: black;
     border-left-color: black;
   }
 
-  .button3d>p {
-    border: transparent 2px dotted;
-  }
-
-  .button3d:active>p {
+  .button3d:active>div {
     border: black 2px dotted;
   }
+
+  /* END OLD */
 
 
   /* Generic 3d element  */
   .element3d {
-    border: black 2px solid;
+    border: black var(--border-winwidth) solid;
     border-bottom-color: black;
     border-right-color: black;
     border-top-color: white;
@@ -53,7 +63,7 @@
   }
 
   .element3d-inv {
-    border: black 2px solid;
+    border: black var(--border-winwidth) solid;
     border-bottom-color: white;
     border-right-color: white;
     border-top-color: black;
@@ -82,4 +92,13 @@
 
   .link:hover {
     text-decoration: underline;
+  }
+
+  .vline {
+    width: 0px;
+    border-width: 2px;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: var(--color-winwhite-500);
+    border-right-color: var(--color-wingray-500);
   }

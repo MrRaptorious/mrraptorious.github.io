@@ -26,3 +26,5 @@ vite.config.ts.timestamp-*
 
 # wasm
 /rust_wasm/target/*
+
+./tailwind.config.js

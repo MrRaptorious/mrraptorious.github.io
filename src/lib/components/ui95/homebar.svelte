@@ -9,7 +9,7 @@
   } from "$lib/components/ui95/ui95types";
   import Speechbubble from "./speechbubble.svelte";
 
-  import msg_information from "$lib/components/ui95/assets/msg_information.ico";
+  import msg_information from "$lib/components/ui95/assets/msg_information.png";
   import start_icon from "$lib/components/ui95/assets/start_icon.png";
   import links_icon from "$lib/components/ui95/assets/links.ico";
   import programs_icon from "$lib/components/ui95/assets/programs.ico";
@@ -17,6 +17,7 @@
   import documents_icon from "$lib/components/ui95/assets/documents.ico";
   import github_icon from "$lib/components/ui95/assets/githubPixelated.png";
   import forbidden_icon from "$lib/components/ui95/assets/forbidden.ico";
+  import text_icon from "$lib/components/ui95/assets/text_bg.png";
 
   interface HomebarProps {
     openPrograms: Program[];
@@ -62,12 +63,14 @@
 </script>
 
 <div
-  class="text-text-500 mt-auto flex w-full p-1 box-border bg-winlightgray-500 space-x-2 z-9000 border-t-white border-2"
+  class="text-text-500 mt-auto flex w-full p-[2px] box-border bg-winlightgray-500 space-x-2 z-9000 border-t-white border-3 h-12"
 >
   <!-- start button -->
   <div class="w-25 text-black flex justify-center">
     <button
-      class="w-25 text-black flex space-x-2 button3d text-xl font-bold justify-center"
+      class:button3d-inv={showStartMenu}
+      class:button3d={!showStartMenu}
+      class="w-25 text-black flex space-x-2 text-xl font-bold justify-center"
       onclick={(e) => {
         e.stopPropagation();
         if (showStartMenu) {
@@ -79,12 +82,18 @@
         }
       }}
     >
-      <img
-        src={start_icon}
-        alt="svelte windows logo"
-        class="[image-rendering:pixelated] p-[3px]"
-      />
-      <p>Home</p>
+      <div class="flex w-full mx-1">
+        <img
+          src={start_icon}
+          alt="svelte windows logo"
+          class="[image-rendering:pixelated] m-[2px]"
+        />
+        <p
+          class="flex h-full items-center text-center leading-0 font-bold text-2xl"
+        >
+          Start
+        </p>
+      </div>
     </button>
 
     {#if showStartMenu}
@@ -199,16 +208,17 @@
     {/if}
   </div>
 
+  <div class="vline h-full"></div>
+
   <!-- open windows -->
-  <div class=" h-full flex space-x-1 overflow-hidden flex-1 min-w-0">
+  <div class="flex h-full space-x-1 overflow-hidden flex-1 min-w-0">
     {#each openPrograms as program (program.id)}
       <button
-        class="h-full flex-1 max-w-60 flex flex-row justify-left items-center {program
-          .windowData?.hasfocus
+        class="flex h-full flex-1 max-w-60 flex-row {program.windowData
+          ?.hasfocus
           ? 'element3d-inv taskbarbutton-focused'
           : 'element3d taskbarbutton'}"
         onclick={() => {
-          console.log("clicked button taskbar" + program.windowData?.hasfocus);
           dataManipulator.setfocus(program.id);
         }}
       >
@@ -217,16 +227,35 @@
           class="p-1 h-full [image-rendering:pixelated]"
           alt={program.title}
         />
-        <p class="text-black truncate">{program.title}</p>
+        <p
+          class="flex items-center text-black h-full truncate text-[15pt] text-center leading-0 pb-[2px]"
+        >
+          {program.title}
+        </p>
       </button>
     {/each}
   </div>
 
+  <div class="vline h-full"></div>
   <!-- time -->
   <div
-    class="px-4 text-black flex content-center items-center justify-center space-x-3 element3d-inv ml-auto"
+    class="px-4 h-full text-black flex content-center items-center justify-center space-x-3 element3d-inv"
+    style="border-top-color:  var(--color-gray-500); border-left-color: var(--color-gray-500);"
   >
-    <div class="flex justify-center space-x-1">
+    <div class="flex h-full justify-center space-x-1 my-1">
+      <!-- <button -->
+      <!--   onclick={() => { -->
+      <!--     showBubble = true; -->
+      <!--   }} -->
+      <!--   class="relative" -->
+      <!-- > -->
+      <!--   <img -->
+      <!--     src={text_icon} -->
+      <!--     alt="svelte windows logo" -->
+      <!--     class="[image-rendering:pixelated] size-6" -->
+      <!--   /> -->
+      <!-- </button> -->
+      <!---->
       <div class="flex justify-center">
         <button
           onclick={() => {
@@ -237,7 +266,7 @@
           <img
             src={msg_information}
             alt="svelte windows logo"
-            class="[image-rendering:pixelated] aspect-square"
+            class="[image-rendering:pixelated] size-8"
           />
 
           {#if showBubble}
@@ -275,7 +304,7 @@
         </button>
       </div>
     </div>
-    <p>
+    <p class="text-[16pt] leading-0">
       {time.toLocaleTimeString("de-DE", {
         hour: "2-digit",
         minute: "2-digit",
