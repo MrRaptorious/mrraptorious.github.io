@@ -134,7 +134,7 @@
       id="closeButton"
       class="h-[calc(100%-5px)] aspect-square mx-1
               grid place-items-center
-              text-black text-lg font-bold
+              text-black text-lg font-bold leading-0
               button3d"
       onclick={() => windowEvents.onClose(program.id)}>X</button
     >
