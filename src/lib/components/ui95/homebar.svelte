@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { stutterFade } from "$lib/components/ui95/ui95Util";
+  import { uiSettings } from "$lib/components/ui95/uiSettings.svelte.js";
   import StartmenuItem from "./startmenuItem.svelte";
   import ScreenSaver from "./screensaver.svelte";
   import type {
@@ -17,7 +18,8 @@
   import documents_icon from "$lib/components/ui95/assets/documents.ico";
   import github_icon from "$lib/components/ui95/assets/githubPixelated.png";
   import forbidden_icon from "$lib/components/ui95/assets/forbidden.ico";
-  import text_icon from "$lib/components/ui95/assets/text_bg.png";
+  import text_icon_smooth from "$lib/components/ui95/assets/font_smooth.png";
+  import text_icon_pixelated from "$lib/components/ui95/assets/font_pixelated.png";
 
   interface HomebarProps {
     openPrograms: Program[];
@@ -243,19 +245,21 @@
     style="border-top-color:  var(--color-gray-500); border-left-color: var(--color-gray-500);"
   >
     <div class="flex h-full justify-center space-x-1 my-1">
-      <!-- <button -->
-      <!--   onclick={() => { -->
-      <!--     showBubble = true; -->
-      <!--   }} -->
-      <!--   class="relative" -->
-      <!-- > -->
-      <!--   <img -->
-      <!--     src={text_icon} -->
-      <!--     alt="svelte windows logo" -->
-      <!--     class="[image-rendering:pixelated] size-6" -->
-      <!--   /> -->
-      <!-- </button> -->
-      <!---->
+      <button
+        onclick={() => {
+          uiSettings.fontPixelated = !uiSettings.fontPixelated;
+        }}
+        class="relative"
+      >
+        <img
+          src={uiSettings.fontPixelated
+            ? text_icon_smooth
+            : text_icon_pixelated}
+          alt="svelte windows logo"
+          class="[image-rendering:pixelated] size-6"
+        />
+      </button>
+
       <div class="flex justify-center">
         <button
           onclick={() => {
@@ -263,10 +267,11 @@
           }}
           class="relative"
         >
+          <!-- Add 1px margin because icon does not look aligned even if it is -->
           <img
             src={msg_information}
             alt="svelte windows logo"
-            class="[image-rendering:pixelated] size-8"
+            class="[image-rendering:pixelated] size-8 mt-[1px]"
           />
 
           {#if showBubble}
@@ -283,8 +288,10 @@
                       <b>Hello!</b> <br />
                       This is my hobby project/portfolio where I show things I wanted
                       to explore or read about.<br />Feel free to look around.
-                      <b> Double click</b> any Desktop Icon to see some Interesting
-                      things!
+                      <b> Double click</b> any Desktop Icon to see some
+                      Interesting things! <br /> <br />
+                      <b>Tipp</b>: If it's too hard to read the pixelated text
+                      inside a window, click the [T] icon in the tray.
                     </p>
                     <hr class="mx-20 mt-2 border-wininfo-200" />
                     <button

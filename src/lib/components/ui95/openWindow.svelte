@@ -10,6 +10,7 @@
     WindowData,
     WindowEvents,
   } from "./ui95types";
+  import { uiSettings } from "./uiSettings.svelte";
 
   interface OpenWindowProps {
     windowData: WindowData;
@@ -139,7 +140,12 @@
 
   <!-- contents-->
   <div class="flex-1 w-full flex flex-row overflow-hidden">
-    <div class="flex-1 overflow-auto">
+    <div
+      class="flex-1 overflow-auto"
+      style="font-family: {uiSettings.fontPixelated
+        ? 'Windows95, sans-serif'
+        : 'sans-serif'};"
+    >
       <!-- svelte-ignore svelte_component_deprecated -->
       <svelte:component this={program.component}></svelte:component>
     </div>

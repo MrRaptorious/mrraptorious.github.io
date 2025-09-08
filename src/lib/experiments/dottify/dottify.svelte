@@ -1,8 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import init, { init_logging, dottify } from "$lib/wasm_processor";
-  import Scrollbar from "$lib/components/ui95/scrollbar.svelte";
-  import { floor } from "three/tsl";
   import banner from "./cenna_banner.png";
 
   // svelte-ignore non_reactive_update
@@ -17,6 +15,7 @@
   let isLoading: boolean = $state(false);
   // svelte-ignore non_reactive_update
   let dotSize = $state(6);
+  let dotPadding = $state(1);
 
   // hovering effect
   let hoveredNumber: number | null = $state(null);
@@ -75,7 +74,12 @@
       }
 
       console.time("dottify");
-      const processedBytes = dottify(byteArray, outputFormat, dotSize);
+      const processedBytes = dottify(
+        byteArray,
+        outputFormat,
+        dotSize,
+        dotPadding,
+      );
       console.timeEnd("dottify");
       const blob = new Blob([processedBytes], {
         type: `image/${outputFormat}`,
@@ -90,7 +94,7 @@
 </script>
 
 <main class="flex mx-[1px]">
-  <div class="min-h-screen p-8 font-sans space-y-10 overflow-hidden">
+  <div class="min-h-screen p-8 space-y-10 overflow-hidden">
     <!-- TEXT -->
     <div class="space-y-10">
       <img src={banner} />
@@ -356,11 +360,20 @@
           type="range"
           id="numberInput"
           bind:value={dotSize}
-          onchange={processImageFromWASM}
           min="2"
           max="100"
           step="2"
           defaultValue="20"
+        />
+        <h3 class="text-xl">Dot Padding:</h3>
+        <input
+          type="range"
+          id="numberInput"
+          bind:value={dotPadding}
+          min="0"
+          max="10"
+          step="1"
+          defaultValue="1"
         />
       </div>
       <button

@@ -5,6 +5,7 @@
     WindowEvents,
     DataManipulator,
   } from "./ui95types";
+  import { uiSettings } from "./uiSettings.svelte";
   import Homebar from "./homebar.svelte";
   import Desktop from "./desktop.svelte";
   import Windowrenderer from "./windowrenderer.svelte";
