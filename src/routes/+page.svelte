@@ -1,7 +1,10 @@
 <script lang="ts">
     import "../app.css";
-
     import { MediaQuery } from "svelte/reactivity";
+    import { page } from "$app/state";
+
+    const keys: string[] = [...page.url.searchParams.keys()];
+    console.log(keys);
 
     // #################### Desktop Icons ####################
     import Desktopenvironment from "$lib/components/ui95/desktopenvironment.svelte";
@@ -11,7 +14,7 @@
 
 {#if large.current}
     <div class="w-screen h-screen overflow-hidden fixed">
-        <Desktopenvironment></Desktopenvironment>
+        <Desktopenvironment toOpen={keys}></Desktopenvironment>
     </div>
 {:else}
     <p>

@@ -7,6 +7,7 @@ export type Program = {
   title: string;
   component: Component;
   windowData: WindowData | null;
+  windowHints: WindowHints | null;
 }
 
 export type WindowData = {
@@ -20,6 +21,11 @@ export type WindowData = {
   zindex: number;
 }
 
+export interface WindowHints {
+  width: number;
+  height: number;
+}
+
 export interface WindowEvents {
   onClose: (id: number) => void;
   onChangePosition: (id: number, newX: number, newY: number) => void;
@@ -30,3 +36,4 @@ export interface DataManipulator {
   setWindowData: (id: number, windowData: WindowData) => void;
   setfocus: (id: number) => void;
 }
+

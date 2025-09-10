@@ -11,5 +11,5 @@ export default {
     subtitle: "Transform an image into an dottified version with WASM",
     tags: ["rust", "wasm", "Generative Art"].toSorted(),
     link: `${base}/experiments/${name}`,
-    component:Dottify,
+    component: Dottify,
 };

@@ -147,7 +147,11 @@
         : 'sans-serif'};"
     >
       <!-- svelte-ignore svelte_component_deprecated -->
-      <svelte:component this={program.component}></svelte:component>
+      <svelte:component
+        this={program.component}
+        {windowEvents}
+        programID={program.id}
+      ></svelte:component>
     </div>
   </div>
 </div>

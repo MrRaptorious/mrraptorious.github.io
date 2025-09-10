@@ -29,8 +29,8 @@
         let windowData: WindowData = {
           pos_x: availableArea.offsetWidth * 0.1,
           pos_y: availableArea.offsetHeight * 0.1,
-          width: availableArea.offsetWidth * 0.8,
-          height: availableArea.offsetHeight * 0.8,
+          width: p.windowHints?.width ?? availableArea.offsetWidth * 0.8,
+          height: p.windowHints?.height ?? availableArea.offsetHeight * 0.8,
           maximized: false,
           minimized: false,
           hasfocus: false,
